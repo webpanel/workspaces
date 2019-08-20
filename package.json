@@ -1,0 +1,50 @@
+{
+  "name": "webpanel-workspaces",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "patch-release": "npm version patch && git push --follow-tags && npm publish",
+    "test": "react-scripts-ts test --env=jsdom"
+  },
+  "dependencies": {
+    "@types/inflection": "^1.5.28",
+    "@types/numeral": "^0.0.25",
+    "inflection": "^1.12.0",
+    "numeral": "^2.0.6",
+    "ts-thunk": "0.0.6"
+  },
+  "peerDependencies": {
+    "ant-design-pro": "*",
+    "antd": "*",
+    "react-i18next": "*",
+    "webpanel-antd": "*",
+    "webpanel-auth": "*",
+    "webpanel-data": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpanel/workspaces.git"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.2.3",
+    "@types/react": "^16.8.24",
+    "@types/react-dom": "^16.8.5",
+    "ant-design-pro": "^1.4.4",
+    "antd": "3.20.7",
+    "apollo-client": "^2.6.4",
+    "graphql": "^14.4.2",
+    "graphql-orm-connetor": "0.0.5",
+    "graphql-tag": "^2.10.1",
+    "i18next": "^17.0.8",
+    "react-apollo": "^3.0.1",
+    "react-i18next": "^10.11.4",
+    "typescript": "^3.5.3",
+    "webpanel-admin": "0.0.14",
+    "webpanel-antd": "0.0.32",
+    "webpanel-auth": "^0.0.24",
+    "webpanel-data": "0.0.45",
+    "webpanel-membershiplist": "0.0.2"
+  }
+}
