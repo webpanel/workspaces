@@ -1,15 +1,11 @@
 import * as React from 'react';
 
 import { Dropdown, Icon, Menu, Modal } from 'antd';
-import { IWorkspace, WorkspaceSession } from './session';
+import { IWorkspace, WorkspaceSession } from '../session';
 
-import { WorkspaceSettings } from './workspace-settings';
-import { workspace } from './model/workspace';
-
-interface IWorkspaceMenuItemProps {
-  workspaces: IWorkspace[];
-  selectedWorkspace: IWorkspace;
-}
+import { WorkspaceSettings } from '../workspace-settings';
+import { WorkspacesLayer } from './workspaceslayer';
+import { workspace } from '../model/workspace';
 
 interface IWorkspaceMenuItemState {
   addingWorkspace: boolean;
@@ -17,7 +13,7 @@ interface IWorkspaceMenuItemState {
 }
 
 export class WorkspaceHeaderItem extends React.Component<
-  IWorkspaceMenuItemProps,
+  any,
   IWorkspaceMenuItemState
 > {
   public state: IWorkspaceMenuItemState = {
@@ -28,12 +24,11 @@ export class WorkspaceHeaderItem extends React.Component<
   private session = WorkspaceSession.shared();
 
   public render() {
-    const { workspaces, selectedWorkspace } = this.props;
+    const selectedWorkspace = WorkspaceSession.shared().getCurrentWorkspace();
 
-    const menu = (
+    const menu = (workspaces: IWorkspace[]) => (
       <Menu
         onClick={e => {
-          window.history.pushState(null, 'aa', '/');
           if (e.key === 'settings') {
             const currentWorkspace = this.session.getCurrentWorkspace();
             this.setState({
@@ -56,7 +51,9 @@ export class WorkspaceHeaderItem extends React.Component<
                 type="check"
                 style={{
                   visibility:
-                    w.id !== selectedWorkspace.id ? 'hidden' : undefined
+                    selectedWorkspace && w.id !== selectedWorkspace.id
+                      ? 'hidden'
+                      : undefined
                 }}
               />
               {w.name}
@@ -72,17 +69,23 @@ export class WorkspaceHeaderItem extends React.Component<
     );
 
     return (
-      <>
-        {this.state.editingWorkspaceID &&
-          this.editWorkspaceModal(this.state.editingWorkspaceID)}
-        {this.getAddingWorkspaceModal()}
-        <Dropdown overlay={menu}>
-          <span className="antd-header-content-item">
-            <Icon type="folder" style={{ padding: '0 8px 0 0' }} />
-            {selectedWorkspace.name}
-          </span>
-        </Dropdown>
-      </>
+      <WorkspacesLayer
+        render={({ error, loading, workspaces }) => {
+          return (
+            <>
+              {this.state.editingWorkspaceID &&
+                this.editWorkspaceModal(this.state.editingWorkspaceID)}
+              {this.getAddingWorkspaceModal()}
+              <Dropdown overlay={menu(workspaces)}>
+                <span className="antd-header-content-item">
+                  <Icon type="folder" style={{ padding: '0 8px 0 0' }} />
+                  {selectedWorkspace && selectedWorkspace.name}
+                </span>
+              </Dropdown>
+            </>
+          );
+        }}
+      />
     );
   }
 
@@ -120,17 +123,4 @@ export class WorkspaceHeaderItem extends React.Component<
       }
     );
   }
-  // private addWorkspace() {
-  //   this.setState({ addingWorkspace: true });
-  //   // const modal = workspace.getCreateView(
-  //   //   {
-  //   //     initialValues: { name: 'blah' }
-  //   //   },
-  //   //   (id: string) => {
-  //   //     global.console.log('created!', id);
-  //   //   }
-  //   // );
-  //   // return modal;
-  //   // message.warning('Not implemented', 3);
-  // }
 }
