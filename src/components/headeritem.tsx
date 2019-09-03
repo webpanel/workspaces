@@ -7,13 +7,16 @@ import { WorkspaceSettings } from '../workspace-settings';
 import { WorkspacesLayer } from './workspaceslayer';
 import { workspace } from '../model/workspace';
 
+interface IWorkspaceMenuItemProps {
+  onChange?: (selectedWorkspace: IWorkspace) => void;
+}
 interface IWorkspaceMenuItemState {
   addingWorkspace: boolean;
   editingWorkspaceID: string | undefined;
 }
 
 export class WorkspaceHeaderItem extends React.Component<
-  any,
+  IWorkspaceMenuItemProps,
   IWorkspaceMenuItemState
 > {
   public state: IWorkspaceMenuItemState = {
@@ -24,6 +27,8 @@ export class WorkspaceHeaderItem extends React.Component<
   private session = WorkspaceSession.shared();
 
   public render() {
+    const { onChange } = this.props;
+
     const selectedWorkspace = WorkspaceSession.shared().getCurrentWorkspace();
 
     const menu = (workspaces: IWorkspace[]) => (
@@ -39,6 +44,9 @@ export class WorkspaceHeaderItem extends React.Component<
           for (const w of workspaces) {
             if (w.id === e.key) {
               this.session.setCurrentWorkspace(w);
+              if (onChange) {
+                onChange(w);
+              }
               break;
             }
           }
