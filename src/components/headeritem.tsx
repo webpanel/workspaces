@@ -3,11 +3,13 @@ import * as React from 'react';
 import { Dropdown, Icon, Menu, Modal } from 'antd';
 import { IWorkspace, WorkspaceSession } from '../session';
 
-import { WorkspaceSettings } from '../workspace-settings';
+import { DataSource } from 'webpanel-data';
+import { WorkspaceSettings } from './workspace-settings';
 import { WorkspacesLayer } from './workspaceslayer';
-import { workspace } from '../model/workspace';
+import { getWorkspace } from '../model/workspace';
 
 interface IWorkspaceMenuItemProps {
+  dataSource: DataSource;
   onChange?: (selectedWorkspace: IWorkspace) => void;
 }
 interface IWorkspaceMenuItemState {
@@ -27,7 +29,7 @@ export class WorkspaceHeaderItem extends React.Component<
   private session = WorkspaceSession.shared();
 
   public render() {
-    const { onChange } = this.props;
+    const { onChange, dataSource } = this.props;
 
     const selectedWorkspace = WorkspaceSession.shared().getCurrentWorkspace();
 
@@ -78,6 +80,7 @@ export class WorkspaceHeaderItem extends React.Component<
 
     return (
       <WorkspacesLayer
+        dataSource={dataSource}
         render={({ error, loading, workspaces }) => {
           return (
             <>
@@ -106,12 +109,17 @@ export class WorkspaceHeaderItem extends React.Component<
         onCancel={() => this.setState({ editingWorkspaceID: undefined })}
         footer={null}
       >
-        <WorkspaceSettings workspaceID={id} />
+        <WorkspaceSettings
+          workspaceID={id}
+          dataSource={this.props.dataSource}
+        />
       </Modal>
     );
   }
 
   private getAddingWorkspaceModal(): React.ReactNode {
+    const workspace = getWorkspace(this.props.dataSource);
+
     return workspace.getCreateView(
       {
         // initialValues: { name: 'blah' },

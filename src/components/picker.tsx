@@ -5,6 +5,7 @@ import { IWorkspace, WorkspaceSession } from '../session';
 
 import { AuthSession } from 'webpanel-auth';
 import { Button } from 'antd';
+import { DataSource } from 'webpanel-data';
 import { WorkspaceMenu } from '../menu';
 import { WorkspacesLayer } from './workspaceslayer';
 
@@ -16,6 +17,7 @@ interface IWorkspacePickerRenderProps {
 }
 
 interface IWorkspacePickerProps {
+  dataSource: DataSource;
   render: (props: IWorkspacePickerRenderProps) => React.ReactNode;
 }
 
@@ -34,8 +36,11 @@ export class WorkspacePicker extends React.Component<IWorkspacePickerProps> {
   }
 
   public render() {
+    const { dataSource } = this.props;
+
     return (
       <WorkspacesLayer
+        dataSource={dataSource}
         render={({ error, loading, workspaces }) => {
           if (error) {
             return this.errorModal(error.message);

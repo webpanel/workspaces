@@ -1,11 +1,10 @@
 import * as React from 'react';
 
+import { DataSource, ResourceCollectionLayer } from 'webpanel-data';
 import { Query, QueryResult } from 'react-apollo';
 
 import { AuthSession } from 'webpanel-auth';
 import { IWorkspace } from '../session';
-import { ResourceCollectionLayer } from 'webpanel-data';
-import { api } from '../model/api';
 import gql from 'graphql-tag';
 
 // import { workspace } from "src/model";
@@ -17,6 +16,7 @@ interface IWorkspacesLayerRenderProps {
 }
 
 interface IWorkspacesLayerProps {
+  dataSource: DataSource;
   render: (props: IWorkspacesLayerRenderProps) => JSX.Element;
 }
 
@@ -29,15 +29,9 @@ const MEBMERSHIPS_QUERY = gql`
 `;
 
 export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
-  constructor(props: IWorkspacesLayerProps) {
-    super(props);
-  }
-
-  public getCurrentWorkspace(): IWorkspace | undefined {
-    return;
-  }
-
   public render() {
+    const { dataSource } = this.props;
+
     const token = AuthSession.current().getTokenPayload();
     const variables = { memberID: token && token.sub };
     return (
@@ -62,7 +56,7 @@ export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
 
           return (
             <ResourceCollectionLayer
-              dataSource={api}
+              dataSource={dataSource}
               name="Workspace"
               fields={['id', 'name']}
               initialFilters={{ id_in: workspacesIDs }}

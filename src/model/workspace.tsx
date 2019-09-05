@@ -1,7 +1,9 @@
+import { DataSource } from 'webpanel-data';
 import { Entity } from 'webpanel-admin';
-import { api } from './api';
 
-export const workspace = new Entity({
-  name: 'Workspace',
-  dataSource: api
-}).inputField('name');
+export const getWorkspace = (api: DataSource): Entity<any> => {
+  return new Entity({
+    name: 'Workspace',
+    dataSource: api
+  }).inputField('name');
+};
