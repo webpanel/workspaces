@@ -4,6 +4,7 @@ import { Dropdown, Icon, Menu, Modal } from 'antd';
 import { IWorkspace, WorkspaceSession } from '../session';
 
 import { DataSource } from 'webpanel-data';
+import { IMembershipListRole } from 'webpanel-membershiplist';
 import { WorkspaceSettings } from './workspace-settings';
 import { WorkspacesLayer } from './workspaceslayer';
 import { getWorkspace } from '../model/workspace';
@@ -11,6 +12,7 @@ import { getWorkspace } from '../model/workspace';
 interface IWorkspaceMenuItemProps {
   dataSource: DataSource;
   onChange?: (selectedWorkspace: IWorkspace) => void;
+  roles?: IMembershipListRole[];
 }
 interface IWorkspaceMenuItemState {
   addingWorkspace: boolean;
@@ -112,6 +114,7 @@ export class WorkspaceHeaderItem extends React.Component<
         <WorkspaceSettings
           workspaceID={id}
           dataSource={this.props.dataSource}
+          roles={this.props.roles}
         />
       </Modal>
     );

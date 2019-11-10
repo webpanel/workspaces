@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { IMembershipListRole } from 'webpanel-membershiplist';
 import { DataSource } from 'webpanel-data';
-interface IWorkspaceDetailProps {
+interface IWorkspaceSettingsProps {
     dataSource: DataSource;
     workspaceID: string;
+    roles?: IMembershipListRole[];
 }
-export declare class WorkspaceSettings extends React.Component<IWorkspaceDetailProps> {
+export declare class WorkspaceSettings extends React.Component<IWorkspaceSettingsProps> {
     render(): JSX.Element;
 }
 export {};

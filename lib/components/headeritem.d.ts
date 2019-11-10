@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { IWorkspace } from '../session';
 import { DataSource } from 'webpanel-data';
+import { IMembershipListRole } from 'webpanel-membershiplist';
 interface IWorkspaceMenuItemProps {
     dataSource: DataSource;
     onChange?: (selectedWorkspace: IWorkspace) => void;
+    roles?: IMembershipListRole[];
 }
 interface IWorkspaceMenuItemState {
     addingWorkspace: boolean;
