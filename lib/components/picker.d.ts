@@ -1,12 +1,14 @@
-import * as React from 'react';
-import { IWorkspace } from '../session';
-import { DataSource } from 'webpanel-data';
+import * as React from "react";
+import { IWorkspace } from "../session";
+import { DataSource } from "webpanel-data";
 interface IWorkspacePickerRenderProps {
     workspaces: IWorkspace[];
     selectedWorkspace: IWorkspace;
 }
 interface IWorkspacePickerProps {
     dataSource: DataSource;
+    memberID: string;
+    onLogout: () => void;
     render: (props: IWorkspacePickerRenderProps) => React.ReactNode;
 }
 export declare class WorkspacePicker extends React.Component<IWorkspacePickerProps> {

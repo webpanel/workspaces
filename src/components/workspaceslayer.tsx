@@ -1,11 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { DataSource, ResourceCollectionLayer } from 'webpanel-data';
-import { Query, QueryResult } from 'react-apollo';
+import { DataSource, ResourceCollectionLayer } from "webpanel-data";
+import { Query, QueryResult } from "react-apollo";
 
-import { AuthSession } from 'webpanel-auth';
-import { IWorkspace } from '../session';
-import gql from 'graphql-tag';
+import { IWorkspace } from "../session";
+import gql from "graphql-tag";
 
 // import { workspace } from "src/model";
 
@@ -17,6 +16,7 @@ interface IWorkspacesLayerRenderProps {
 
 interface IWorkspacesLayerProps {
   dataSource: DataSource;
+  memberID: string;
   render: (props: IWorkspacesLayerRenderProps) => JSX.Element;
 }
 
@@ -30,10 +30,9 @@ const MEBMERSHIPS_QUERY = gql`
 
 export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
   public render() {
-    const { dataSource } = this.props;
+    const { dataSource, memberID } = this.props;
 
-    const token = AuthSession.current().getTokenPayload();
-    const variables = { memberID: token && token.sub };
+    const variables = { memberID };
     return (
       <Query
         query={MEBMERSHIPS_QUERY}
@@ -42,7 +41,7 @@ export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
           data,
           loading,
           refetch,
-          error
+          error,
         }: QueryResult<any>): JSX.Element => {
           if (loading) {
             return this.props.render({ error, loading, workspaces: [] });
@@ -58,7 +57,7 @@ export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
             <ResourceCollectionLayer
               dataSource={dataSource}
               name="Workspace"
-              fields={['id', 'name']}
+              fields={["id", "name"]}
               initialFilters={{ id_in: workspacesIDs }}
               render={({ error, data, loading }) => {
                 if (loading) {
@@ -68,7 +67,7 @@ export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
                   return this.props.render({
                     error,
                     loading: false,
-                    workspaces: []
+                    workspaces: [],
                   });
                 }
 
@@ -79,13 +78,13 @@ export class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {
                       "You don't have access to any workspace :("
                     ),
                     loading: false,
-                    workspaces: []
+                    workspaces: [],
                   });
                 }
 
                 return this.props.render({
                   workspaces,
-                  loading: false
+                  loading: false,
                 });
               }}
             />

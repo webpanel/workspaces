@@ -1,13 +1,12 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Alert, Modal, Spin } from 'antd';
-import { IWorkspace, WorkspaceSession } from '../session';
+import { Alert, Modal, Spin } from "antd";
+import { IWorkspace, WorkspaceSession } from "../session";
 
-import { AuthSession } from 'webpanel-auth';
-import { Button } from 'antd';
-import { DataSource } from 'webpanel-data';
-import { WorkspaceMenu } from '../menu';
-import { WorkspacesLayer } from './workspaceslayer';
+import { Button } from "antd";
+import { DataSource } from "webpanel-data";
+import { WorkspaceMenu } from "../menu";
+import { WorkspacesLayer } from "./workspaceslayer";
 
 // import { workspace } from "src/model";
 
@@ -18,6 +17,8 @@ interface IWorkspacePickerRenderProps {
 
 interface IWorkspacePickerProps {
   dataSource: DataSource;
+  memberID: string;
+  onLogout: () => void;
   render: (props: IWorkspacePickerRenderProps) => React.ReactNode;
 }
 
@@ -36,11 +37,12 @@ export class WorkspacePicker extends React.Component<IWorkspacePickerProps> {
   }
 
   public render() {
-    const { dataSource } = this.props;
+    const { dataSource, memberID } = this.props;
 
     return (
       <WorkspacesLayer
         dataSource={dataSource}
+        memberID={memberID}
         render={({ error, loading, workspaces }) => {
           if (error) {
             return this.errorModal(error.message);
@@ -51,9 +53,9 @@ export class WorkspacePicker extends React.Component<IWorkspacePickerProps> {
               <Spin
                 spinning={loading}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  marginTop: '30px'
+                  width: "100%",
+                  height: "100%",
+                  marginTop: "30px",
                 }}
               />
             );
@@ -62,7 +64,7 @@ export class WorkspacePicker extends React.Component<IWorkspacePickerProps> {
           const currentWorkspace = this.session.getCurrentWorkspace();
           if (
             currentWorkspace &&
-            workspaces.map(w => w.id).indexOf(currentWorkspace.id) === -1
+            workspaces.map((w) => w.id).indexOf(currentWorkspace.id) === -1
           ) {
             this.session.clearCurrentWorkspace();
           }
@@ -111,7 +113,7 @@ export class WorkspacePicker extends React.Component<IWorkspacePickerProps> {
             <div key={`workspace_${selectedWorkspace.id}`}>
               {this.props.render({
                 selectedWorkspace,
-                workspaces
+                workspaces,
               })}
             </div>
           );
@@ -121,12 +123,13 @@ export class WorkspacePicker extends React.Component<IWorkspacePickerProps> {
   }
 
   private errorModal(message: string): JSX.Element {
+    const { onLogout } = this.props;
     return (
       <Modal
         visible={true}
         closable={false}
         footer={
-          <Button type="primary" onClick={() => AuthSession.current().logout()}>
+          <Button type="primary" onClick={() => onLogout()}>
             Logout
           </Button>
         }

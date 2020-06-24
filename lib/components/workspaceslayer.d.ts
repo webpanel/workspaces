@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { DataSource } from 'webpanel-data';
-import { IWorkspace } from '../session';
+import * as React from "react";
+import { DataSource } from "webpanel-data";
+import { IWorkspace } from "../session";
 interface IWorkspacesLayerRenderProps {
     workspaces: IWorkspace[];
     error?: Error;
@@ -8,6 +8,7 @@ interface IWorkspacesLayerRenderProps {
 }
 interface IWorkspacesLayerProps {
     dataSource: DataSource;
+    memberID: string;
     render: (props: IWorkspacesLayerRenderProps) => JSX.Element;
 }
 export declare class WorkspacesLayer extends React.Component<IWorkspacesLayerProps> {

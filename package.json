@@ -43,7 +43,6 @@
     "typescript": "^3.5.3",
     "webpanel-admin": "0.0.14",
     "webpanel-antd": "0.0.32",
-    "webpanel-auth": "^0.0.24",
     "webpanel-data": "0.0.45",
     "webpanel-membershiplist": "0.0.4"
   }
